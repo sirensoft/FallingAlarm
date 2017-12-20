@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void onResume() {
         super.onResume();
-        sensorManager.registerListener(accelListener, sensor, SensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager.registerListener(accelListener, sensor, SensorManager.SENSOR_DELAY_GAME);
     }
 
     public void onStop() {
@@ -50,23 +50,22 @@ public class MainActivity extends AppCompatActivity {
         public void onAccuracyChanged(Sensor sensor, int acc) { }
 
         public void onSensorChanged(SensorEvent event) {
-            float x = event.values[0];
-            float y = event.values[1];
-            float z = event.values[2];
-            tv_x.setText("X: "+Float.toString(x));
-            tv_y.setText("Y: "+Float.toString(y));
-            tv_z.setText("Z: "+Float.toString(z));
-            float xx = x*x;
-            float yy = y*y;
-            float zz = z*z;
-            Float f = new Float(xx+yy+zz);
-            Double d = new Double(f.toString());
-            Double a = Math.sqrt(d);
-            tv_res.setText(Double.toString(a));
-            if(a>15){
-                ToneGenerator toneG = new ToneGenerator(AudioManager.STREAM_ALARM, 100);
+            double x = event.values[0];
+            double y = event.values[1];
+            double z = event.values[2];
+            tv_x.setText("X: "+Double.toString(x));
+            tv_y.setText("Y: "+Double.toString(y));
+            tv_z.setText("Z: "+Double.toString(z));
+            double xx = x*x;
+            double yy = y*y;
+            double zz = z*z;
+            double sum = xx+yy+zz;
+            double A = Math.sqrt(sum);
+            tv_res.setText("A: "+Double.toString(A));
+            if(A>16){
+                ToneGenerator toneG = new ToneGenerator(AudioManager.STREAM_ALARM, 50);
                 toneG.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD, 200);
-                tv_stat.append(Double.toString(a)+"\n");
+                tv_stat.append(Double.toString(A)+"\n");
             }
         }
     };
